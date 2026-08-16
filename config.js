@@ -9,5 +9,5 @@
    supabase-schema.sql, not by hiding this key. Never put your
    "service_role" key here — that one must stay secret.
 ═══════════════════════════════════════════════════════ */
-const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';      // e.g. https://abcdefgh.supabase.co
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_PUBLIC_KEY';
+const SUPABASE_URL = 'https://evobztlsxwbtzzilvnto.supabase.co';      // e.g. https://abcdefgh.supabase.co
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2b2J6dGxzeHdidHp6aWx2bnRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDAxMzIsImV4cCI6MjEwMjQ3NjEzMn0.5s0i9oJC7Zjaa2rHHIfIlDZC8Ly8ic0v5PwFWjaB090';
