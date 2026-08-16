@@ -9,6 +9,39 @@ let certsBySlug = {};
 
 const PLACEHOLDER_IMG = 'assets/img-placeholder.svg';
 
+/* ══════════════════════════════════════════════════════
+   SECURITY HELPERS
+   Every value that comes from Supabase is treated as
+   untrusted — it's editable by anyone with dashboard
+   access, and could contain HTML/JS by accident or design.
+   escapeHtml() neutralises it before it's ever inserted
+   via innerHTML, so it can't break out into a tag or
+   attribute. isSafeUrl() blocks javascript:/data: links
+   so a malicious URL in a "github" or "verify" field can't
+   execute script when clicked.
+═══════════════════════════════════════════════════════ */
+function escapeHtml(value) {
+  const str = value === null || value === undefined ? '' : String(value);
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isSafeUrl(url) {
+  if (!url) return false;
+  try {
+    // Relative paths (e.g. assets/certs/ibm.jpg) are always fine.
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) return true;
+    const parsed = new URL(url, window.location.href);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 function withFallback(imgTag) {
   return imgTag.replace('<img ', `<img onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}'" `);
 }
@@ -21,8 +54,8 @@ function renderSkills(rows) {
   if (!rows || !rows.length) { grid.innerHTML = '<p>No skills added yet.</p>'; return; }
   grid.innerHTML = rows.map((s) => `
     <article class="card">
-      <h3>${s.category}</h3>
-      <p>${s.items || ''}</p>
+      <h3>${escapeHtml(s.category)}</h3>
+      <p>${escapeHtml(s.items)}</p>
     </article>
   `).join('');
 }
@@ -35,8 +68,8 @@ function renderExperience(rows) {
   if (!rows || !rows.length) { grid.innerHTML = '<p>No experience added yet.</p>'; return; }
   grid.innerHTML = rows.map((x) => `
     <article class="card">
-      <h3>${x.title}</h3>
-      <p>${x.description || ''}</p>
+      <h3>${escapeHtml(x.title)}</h3>
+      <p>${escapeHtml(x.description)}</p>
     </article>
   `).join('');
 }
@@ -49,8 +82,8 @@ function renderLeadership(rows) {
   if (!rows || !rows.length) { grid.innerHTML = '<p>Nothing added yet.</p>'; return; }
   grid.innerHTML = rows.map((x) => `
     <article class="card">
-      <h3>${x.title}</h3>
-      <p>${x.description || ''}</p>
+      <h3>${escapeHtml(x.title)}</h3>
+      <p>${escapeHtml(x.description)}</p>
     </article>
   `).join('');
 }
@@ -63,9 +96,9 @@ function renderVentures(rows) {
   if (!rows || !rows.length) { grid.innerHTML = '<p>No ventures added yet.</p>'; return; }
   grid.innerHTML = rows.map((v) => `
     <article class="card venture-card">
-      <p class="venture-tag">${v.tag || ''}</p>
-      <h3>${v.title}</h3>
-      <p>${v.description || ''}</p>
+      <p class="venture-tag">${escapeHtml(v.tag)}</p>
+      <h3>${escapeHtml(v.title)}</h3>
+      <p>${escapeHtml(v.description)}</p>
     </article>
   `).join('');
 }
@@ -78,9 +111,9 @@ function renderTestimonials(rows) {
   if (!rows || !rows.length) { grid.innerHTML = '<p>No testimonials added yet.</p>'; return; }
   grid.innerHTML = rows.map((t) => `
     <article class="card testimonial-card">
-      <p class="t-quote">"${t.quote}"</p>
-      <p class="t-name">${t.name || ''}</p>
-      <p class="t-role">${t.role || ''}</p>
+      <p class="t-quote">"${escapeHtml(t.quote)}"</p>
+      <p class="t-name">${escapeHtml(t.name)}</p>
+      <p class="t-role">${escapeHtml(t.role)}</p>
     </article>
   `).join('');
 }
@@ -98,12 +131,15 @@ function renderCertifications(rows) {
   grid.innerHTML = rows.map((c) => {
     const badgeClass = c.status === 'completed' ? 'badge-done' : 'badge-progress';
     const badgeLabel = c.status === 'completed' ? 'Completed' : 'In Progress';
-    const yearLine = c.year ? `<p><strong>Year:</strong> ${c.year}${c.extra_note ? ' · ' + c.extra_note : ''}</p>` : '';
+    const yearLine = c.year
+      ? `<p><strong>Year:</strong> ${escapeHtml(c.year)}${c.extra_note ? ' · ' + escapeHtml(c.extra_note) : ''}</p>`
+      : '';
+    const safeImage = isSafeUrl(c.image) ? c.image : PLACEHOLDER_IMG;
     return withFallback(`
-    <article class="card cert-card" data-cert="${c.slug}" tabindex="0" role="button" aria-label="View ${c.title}">
-      <div class="card-img"><img src="${c.image || PLACEHOLDER_IMG}" alt="${c.title}"></div>
-      <h3>${c.title}</h3>
-      <p><strong>Issuer:</strong> ${c.issuer || ''} <span class="cert-badge ${badgeClass}">${badgeLabel}</span></p>
+    <article class="card cert-card" data-cert="${escapeHtml(c.slug)}" tabindex="0" role="button" aria-label="View ${escapeHtml(c.title)}">
+      <div class="card-img"><img src="${escapeHtml(safeImage)}" alt="${escapeHtml(c.title)}"></div>
+      <h3>${escapeHtml(c.title)}</h3>
+      <p><strong>Issuer:</strong> ${escapeHtml(c.issuer)} <span class="cert-badge ${badgeClass}">${badgeLabel}</span></p>
       ${yearLine}
       <p class="card-hint">Click to view certificate →</p>
     </article>
@@ -123,14 +159,17 @@ function renderProjects(rows) {
   projectsBySlug = {};
   rows.forEach((p) => { projectsBySlug[p.slug] = p; });
 
-  grid.innerHTML = rows.map((p) => withFallback(`
-    <article class="project-card" data-gcat="${p.category}" data-project="${p.slug}" tabindex="0" role="button" aria-label="View ${p.title} details">
-      <div class="card-img"><img src="${p.image || PLACEHOLDER_IMG}" alt="${p.title}"></div>
-      <h3>${p.title}</h3>
-      <p>${p.description || ''}</p>
+  grid.innerHTML = rows.map((p) => {
+    const safeImage = isSafeUrl(p.image) ? p.image : PLACEHOLDER_IMG;
+    return withFallback(`
+    <article class="project-card" data-gcat="${escapeHtml(p.category)}" data-project="${escapeHtml(p.slug)}" tabindex="0" role="button" aria-label="View ${escapeHtml(p.title)} details">
+      <div class="card-img"><img src="${escapeHtml(safeImage)}" alt="${escapeHtml(p.title)}"></div>
+      <h3>${escapeHtml(p.title)}</h3>
+      <p>${escapeHtml(p.description)}</p>
       <p class="card-hint">Click for details →</p>
     </article>
-  `)).join('');
+  `);
+  }).join('');
 
   wireProjectClicks();
   wireFilters();
@@ -152,10 +191,12 @@ function openModal(kind, id) {
   const hlWrap = document.getElementById('modalHighlights');
   const linksWrap = document.getElementById('modalLinks');
 
-  img.src = data.image || PLACEHOLDER_IMG;
+  // textContent everywhere below — never innerHTML — so nothing here
+  // needs escaping; the browser treats it as plain text automatically.
+  img.src = isSafeUrl(data.image) ? data.image : PLACEHOLDER_IMG;
   img.onerror = function () { this.onerror = null; this.src = PLACEHOLDER_IMG; };
-  img.alt = data.title;
-  title.textContent = data.title;
+  img.alt = data.title || '';
+  title.textContent = data.title || '';
   stackWrap.innerHTML = '';
   hlWrap.innerHTML = '';
   linksWrap.innerHTML = '';
@@ -174,11 +215,11 @@ function openModal(kind, id) {
       li.textContent = h;
       hlWrap.appendChild(li);
     });
-    if (data.github) {
+    if (data.github && isSafeUrl(data.github)) {
       const a = document.createElement('a');
       a.href = data.github;
       a.target = '_blank';
-      a.rel = 'noopener';
+      a.rel = 'noopener noreferrer';
       a.className = 'btn modal-btn';
       a.textContent = 'View on GitHub';
       linksWrap.appendChild(a);
@@ -187,20 +228,20 @@ function openModal(kind, id) {
     const statusLabel = data.status === 'completed' ? 'Completed' : 'In Progress';
     meta.textContent = [data.issuer, statusLabel, data.year].filter(Boolean).join(' · ');
     desc.textContent = data.description || '';
-    if (data.cert_url) {
+    if (data.cert_url && isSafeUrl(data.cert_url)) {
       const a = document.createElement('a');
       a.href = data.cert_url;
       a.target = '_blank';
-      a.rel = 'noopener';
+      a.rel = 'noopener noreferrer';
       a.className = 'btn modal-btn';
       a.textContent = 'View Certificate';
       linksWrap.appendChild(a);
     }
-    if (data.verify_url) {
+    if (data.verify_url && isSafeUrl(data.verify_url)) {
       const a2 = document.createElement('a');
       a2.href = data.verify_url;
       a2.target = '_blank';
-      a2.rel = 'noopener';
+      a2.rel = 'noopener noreferrer';
       a2.className = 'btn btn-outline modal-btn';
       a2.textContent = 'Verify with Issuer';
       linksWrap.appendChild(a2);
