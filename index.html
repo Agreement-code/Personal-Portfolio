@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Personal professional portfolio" />
+  <title>Personal Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="profile-image.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── MOBILE HEADER (hamburger) ── -->
+  <div id="mobHeader" class="mob-header">
+    <a href="#top" class="brand">Root@Tendani</a>
+    <button id="navToggle" class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+
+  <div id="layout">
+
+    <!-- ── SIDEBAR NAV ── -->
+    <nav class="sidebar" id="mainNav">
+      <a href="#top" class="brand">Root@Tendani<span class="cursor"></span></a>
+      <div class="nav-links">
+        <a class="nav-link" href="#home"><span class="nl-num">00</span> Home</a>
+        <a class="nav-link" href="#skills"><span class="nl-num">01</span> Skills</a>
+        <a class="nav-link" href="#experience"><span class="nl-num">02</span> Experience</a>
+        <a class="nav-link" href="#certifications"><span class="nl-num">03</span> Certifications</a>
+        <a class="nav-link" href="#ventures"><span class="nl-num">04</span> Ventures</a>
+        <a class="nav-link" href="#gallery"><span class="nl-num">05</span> Gallery</a>
+        <a class="nav-link" href="#testimonials"><span class="nl-num">06</span> Testimonials</a>
+        <a class="nav-link" href="#leadership"><span class="nl-num">07</span> Leadership</a>
+        <a class="nav-link" href="#contact"><span class="nl-num">08</span> Contact</a>
+      </div>
+      <div class="sidebar-bottom">
+        <span class="avail-dot"></span> Available for AppSec roles
+      </div>
+    </nav>
+
+    <main id="top" class="main">
+      <section id="home" class="hero">
+        <div class="container hero-content">
+          <p class="eyebrow">Hello, I'm</p>
+          <h1>Tendani Shonisani Thomu</h1>
+          <h2 class="subtitle"><strong style="color: #64d9ff;"> Junior Cybersecurity Analyst  |  Application Security Enthusiast  |  Python Developer  |  Penetration Tester</strong></h2>
+          <div class="hero-content-flex">
+            <div class="hero-content-main">
+              <p> Junior Cybersecurity Analyst and Python developer with hands-on experience in application
+   security, ethical hacking, secure coding, and network defence. Holder of an IBM Cybersecurity Certificate awarded via scholarship from ITExperience and
+   ShePlusTech. Passionate about Application Security and growing into a globally recognised
+   security professional. </p>
+              <div class="social-links">
+                <a href="https://www.linkedin.com/in/tendy2027" target="_blank">LinkedIn</a>
+                <a href="https://github.com/Tendy2027" target="_blank">GitHub</a>
+              </div>
+              <div class="button-group">
+                <a class="btn" href="#gallery">Explore Work</a>
+                <a class="btn" href="#contact">Get In Touch</a>
+              </div>
+            </div>
+            <div class="hero-avatar-container">
+              <img src="profile_picture.jpg"
+                   onerror="this.onerror=null; this.src='assets/img-placeholder.svg';"
+                   alt="Tendani Shonisani Thomu"
+                   class="hero-avatar">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SKILLS (from Supabase) ── -->
+      <section id="skills" class="section alternate">
+        <div class="container">
+          <h2>Skills</h2>
+          <div class="grid grid-2 data-grid" id="skillsGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── EXPERIENCE (from Supabase) ── -->
+      <section id="experience" class="section">
+        <div class="container">
+          <h2>Work Experience and Self-Education Experience</h2>
+          <div class="grid grid-2 data-grid" id="experienceGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CERTIFICATIONS (from Supabase, clickable, with images) ── -->
+      <section id="certifications" class="section alternate">
+        <div class="container">
+          <h2>Certifications &amp; Training</h2>
+          <p class="section-intro">Click a certificate to view the badge/document and issuer verification link.</p>
+          <div class="grid grid-2 data-grid" id="certGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── VENTURES (from Supabase) ── -->
+      <section id="ventures" class="section">
+        <div class="container">
+          <h2>Ventures</h2>
+          <p class="section-intro">What I'm building right now, and where I'm headed next.</p>
+          <div class="grid grid-2 data-grid" id="venturesGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── GALLERY (from Supabase, clickable, filterable, with images) ── -->
+      <section id="gallery" class="section alternate">
+        <div class="container">
+          <h2>Gallery</h2>
+          <p class="section-intro">Click a project to see the full write-up, tech stack, and highlights.</p>
+          <div class="filter-row" id="galleryFilters">
+            <button class="filter-btn active" data-gfilter="all">All</button>
+            <button class="filter-btn" data-gfilter="security">Security Tools</button>
+            <button class="filter-btn" data-gfilter="web">Web Dev</button>
+            <button class="filter-btn" data-gfilter="training">Training</button>
+            <button class="filter-btn" data-gfilter="venture">Ventures</button>
+          </div>
+          <div class="grid grid-2 data-grid" id="galleryGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TESTIMONIALS (from Supabase) ── -->
+      <section id="testimonials" class="section">
+        <div class="container">
+          <h2>Testimonials</h2>
+          <p class="section-intro">What others say about me and my work.</p>
+          <div class="grid grid-2 data-grid" id="testimonialsGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── LEADERSHIP (from Supabase) ── -->
+      <section id="leadership" class="section alternate">
+        <div class="container">
+          <h2>Leadership &amp; Extracurricular</h2>
+          <div class="grid grid-2 data-grid" id="leadershipGrid">
+            <p>Loading…</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section alternate">
+        <div class="container">
+          <h2>Contact</h2>
+          <p>Send me a message and I'll respond as soon as possible.</p>
+
+          <form action="https://formspree.io/f/meevlwyg" method="POST" id="contactForm" class="contact-form">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required />
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit" class="btn">Send</button>
+            <div id="formMessage" style="display:none; margin-top:1em;"></div>
+          </form>
+
+          <p class="hint">* Will get back as soon as possible</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 All-of-Tendy - Portfolio.</p>
+    </div>
+  </footer>
+
+  <!-- ── MODAL (shared by projects and certificates) ── -->
+  <div id="modalOverlay" class="modal-overlay" onclick="handleOverlayClick(event)">
+    <div id="modalBox" class="modal-box" role="dialog" aria-modal="true">
+      <button id="modalClose" class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+      <div id="modalImgWrap" class="modal-img-wrap">
+        <img id="modalImg" src="" alt="">
+      </div>
+      <p id="modalMeta" class="modal-meta"></p>
+      <h3 id="modalTitle" class="modal-title"></h3>
+      <p id="modalDesc" class="modal-desc"></p>
+      <div id="modalStack" class="modal-stack"></div>
+      <ul id="modalHighlights" class="modal-highlights"></ul>
+      <div id="modalLinks" class="modal-links"></div>
+    </div>
+  </div>
+
+  <!-- Supabase client SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('contactForm');
+      const formMessage = document.getElementById('formMessage');
+      if (form) {
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          formMessage.style.display = 'none';
+          const formData = new FormData(form);
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+            if (response.ok) {
+              formMessage.textContent = 'Thank you! Your message has been sent.';
+              formMessage.style.color = 'green';
+              formMessage.style.display = 'block';
+              form.reset();
+            } else {
+              formMessage.textContent = 'Oops! There was a problem sending your message.';
+              formMessage.style.color = 'red';
+              formMessage.style.display = 'block';
+            }
+          } catch (error) {
+            formMessage.textContent = 'Network error. Please try again later.';
+            formMessage.style.color = 'red';
+            formMessage.style.display = 'block';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
