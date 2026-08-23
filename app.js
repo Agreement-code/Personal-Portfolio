@@ -7,7 +7,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 let projectsBySlug = {};
 let certsBySlug = {};
 
-const PLACEHOLDER_IMG = 'assets/img-placeholder.svg';
+const PLACEHOLDER_IMG = 'img-placeholder.svg';
 
 /* ══════════════════════════════════════════════════════
    SECURITY HELPERS
