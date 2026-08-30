@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', system-ui, sans-serif;
@@ -622,4 +626,385 @@ label {
   background: transparent;
   color: var(--primary);
   border: 1px solid rgba(100, 217, 255, 0.4);
+}
+
+/* ═══════════════════════════════
+   TESTIMONIALS — anonymisation notice
+═══════════════════════════════ */
+.anon-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(100, 217, 255, 0.06);
+  border: 1px solid rgba(100, 217, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+.anon-icon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  background: rgba(100, 217, 255, 0.15);
+  color: var(--primary);
+  font-style: normal;
+  font-size: 0.75rem;
+}
+
+/* ═══════════════════════════════
+   TESTIMONIALS — featured card
+═══════════════════════════════ */
+.testimonial-featured {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 220px;
+}
+
+.featured-quote-icon {
+  font-family: Georgia, serif;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--primary-2);
+  opacity: 0.5;
+  margin-bottom: 0.25rem;
+}
+
+.featured-quote-text {
+  font-size: 1.15rem;
+  color: var(--text);
+  line-height: 1.7;
+  margin: 0 auto 1.5rem;
+  max-width: 560px;
+  animation: testiFade 0.4s ease;
+}
+
+.featured-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.avatar-badge {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #08111f;
+}
+
+.featured-author-text {
+  text-align: left;
+}
+.featured-author-name {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.featured-author-role {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+@keyframes testiFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════
+   TESTIMONIALS — carousel controls
+═══════════════════════════════ */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.carousel-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+}
+.carousel-arrow:hover {
+  color: var(--primary);
+  border-color: rgba(100, 217, 255, 0.35);
+}
+
+.carousel-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+.carousel-dot.active {
+  width: 22px;
+  border-radius: 5px;
+  background: var(--primary);
+}
+
+/* Generic swipe-progress dots under other card carousels
+   (Skills, Experience, Certifications, Ventures, Gallery, Leadership).
+   Hidden on desktop where cards aren't swipeable; shown once the
+   grid becomes a horizontal swipe row at the phone breakpoint. */
+.swipe-dots {
+  display: none;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+@media (max-width: 768px) {
+  .swipe-dots {
+    display: flex;
+  }
+}
+
+/* ═══════════════════════════════
+   TESTIMONIALS — mini grid
+═══════════════════════════════ */
+.testimonial-mini-grid {
+  margin-top: 0.5rem;
+}
+
+.testimonial-mini-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.testimonial-mini-card:hover,
+.testimonial-mini-card:focus-visible {
+  border-color: rgba(100, 217, 255, 0.35);
+  transform: translateY(-2px);
+}
+.testimonial-mini-card.active {
+  border-color: var(--primary);
+}
+
+.testimonial-mini-card .avatar-badge {
+  width: 36px;
+  height: 36px;
+  font-size: 0.78rem;
+}
+
+.mini-quote {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+.mini-name {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+.mini-role {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* ═══════════════════════════════
+   FOOTER — full brand/nav/status layout
+═══════════════════════════════ */
+.site-footer-new {
+  border-top: 1px solid var(--border);
+  margin-left: var(--nav-w);
+  padding-top: 3rem;
+  background: rgba(7, 15, 26, 0.4);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2rem;
+}
+
+.footer-brand-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+.footer-shield {
+  width: 26px;
+  height: 26px;
+  color: var(--primary);
+}
+.footer-name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+.footer-tagline {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 1.25rem;
+}
+.footer-socials {
+  display: flex;
+  gap: 0.75rem;
+}
+.footer-socials a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: grid;
+  place-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+.footer-socials a:hover {
+  color: var(--primary);
+  border-color: rgba(100, 217, 255, 0.35);
+}
+.footer-socials svg {
+  width: 17px;
+  height: 17px;
+}
+
+.footer-nav h4,
+.footer-status h4 {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  margin: 0 0 1rem;
+}
+
+.footer-nav-links {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.6rem 1.5rem;
+}
+.footer-nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.2s ease;
+}
+.footer-nav-links a:hover {
+  color: var(--primary);
+}
+
+.status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.status-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.dot-green { background: #2ee672; }
+.dot-red { background: #ff5c5c; }
+.dot-blue { background: var(--primary-2); }
+.dot-purple { background: #b07cff; }
+.dot-green.pulsing {
+  animation: pulse 2s infinite;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.back-to-top {
+  color: var(--primary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  transition: all 0.2s ease;
+}
+.back-to-top:hover {
+  border-color: rgba(100, 217, 255, 0.35);
+  background: rgba(100, 217, 255, 0.06);
+}
+
+@media (max-width: 900px) {
+  .site-footer-new {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .testimonial-featured {
+    padding: 1.75rem 1.25rem;
+  }
 }

@@ -104,18 +104,109 @@ function renderVentures(rows) {
 }
 
 /* ══════════════════════════════════════════════════════
-   RENDER: TESTIMONIALS
+   RENDER: TESTIMONIALS — featured card + carousel + mini grid
 ═══════════════════════════════════════════════════════ */
+let testimonialsData = [];
+let currentTestiIndex = 0;
+
+function getInitials(name) {
+  if (!name) return '?';
+  const parts = String(name).trim().split(/\s+/);
+  const initials = parts.slice(0, 2).map((p) => p[0] || '').join('');
+  return initials.toUpperCase() || '?';
+}
+
+function renderFeaturedTestimonial(index) {
+  const featured = document.getElementById('testimonialFeatured');
+  const t = testimonialsData[index];
+  if (!t) return;
+
+  const initials = getInitials(t.name);
+  const color = t.avatar_color || '#64d9ff';
+  const roleLine = [t.role, t.company].filter(Boolean).join(' — ');
+
+  featured.innerHTML = `
+    <div class="featured-quote-icon">"</div>
+    <p class="featured-quote-text">${escapeHtml(t.quote)}</p>
+    <div class="featured-author">
+      <div class="avatar-badge" style="background:${escapeHtml(color)}">${escapeHtml(initials)}</div>
+      <div class="featured-author-text">
+        <p class="featured-author-name">${escapeHtml(t.name)}</p>
+        <p class="featured-author-role">${escapeHtml(roleLine)}</p>
+      </div>
+    </div>
+  `;
+
+  // Dots
+  document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+
+  // Mini cards
+  document.querySelectorAll('.testimonial-mini-card').forEach((card, i) => {
+    card.classList.toggle('active', i === index);
+  });
+}
+
+function goToTestimonial(index) {
+  const len = testimonialsData.length;
+  if (!len) return;
+  currentTestiIndex = ((index % len) + len) % len;
+  renderFeaturedTestimonial(currentTestiIndex);
+}
+
 function renderTestimonials(rows) {
+  const featured = document.getElementById('testimonialFeatured');
   const grid = document.getElementById('testimonialsGrid');
-  if (!rows || !rows.length) { grid.innerHTML = '<p>No testimonials added yet.</p>'; return; }
-  grid.innerHTML = rows.map((t) => `
-    <article class="card testimonial-card">
-      <p class="t-quote">"${escapeHtml(t.quote)}"</p>
-      <p class="t-name">${escapeHtml(t.name)}</p>
-      <p class="t-role">${escapeHtml(t.role)}</p>
-    </article>
-  `).join('');
+  const dotsWrap = document.getElementById('testiDots');
+  const prevBtn = document.getElementById('testiPrev');
+  const nextBtn = document.getElementById('testiNext');
+
+  testimonialsData = rows || [];
+
+  if (!testimonialsData.length) {
+    featured.innerHTML = '<p>No testimonials added yet.</p>';
+    grid.innerHTML = '';
+    dotsWrap.innerHTML = '';
+    return;
+  }
+
+  // Dots
+  dotsWrap.innerHTML = testimonialsData.map((_, i) =>
+    `<button class="carousel-dot" data-index="${i}" aria-label="Go to testimonial ${i + 1}"></button>`
+  ).join('');
+  dotsWrap.querySelectorAll('.carousel-dot').forEach((dot) => {
+    dot.addEventListener('click', () => goToTestimonial(Number(dot.dataset.index)));
+  });
+
+  prevBtn.onclick = () => goToTestimonial(currentTestiIndex - 1);
+  nextBtn.onclick = () => goToTestimonial(currentTestiIndex + 1);
+
+  // Mini grid — click promotes a testimonial to featured
+  grid.innerHTML = testimonialsData.map((t, i) => {
+    const initials = getInitials(t.name);
+    const color = t.avatar_color || '#64d9ff';
+    const roleLine = [t.role, t.company].filter(Boolean).join(' — ');
+    return `
+      <article class="testimonial-mini-card" data-index="${i}" tabindex="0" role="button" aria-label="View ${escapeHtml(t.name)}'s testimonial">
+        <div class="avatar-badge" style="background:${escapeHtml(color)}">${escapeHtml(initials)}</div>
+        <div>
+          <p class="mini-quote">"${escapeHtml(t.quote)}"</p>
+          <p class="mini-name">${escapeHtml(t.name)}</p>
+          <p class="mini-role">${escapeHtml(roleLine)}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
+  grid.querySelectorAll('.testimonial-mini-card').forEach((card) => {
+    const i = Number(card.dataset.index);
+    card.addEventListener('click', () => goToTestimonial(i));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToTestimonial(i); }
+    });
+  });
+
+  goToTestimonial(0);
 }
 
 /* ══════════════════════════════════════════════════════
@@ -296,6 +387,7 @@ function wireFilters() {
         const show = filter === 'all' || card.dataset.gcat === filter;
         card.classList.toggle('hidden', !show);
       });
+      setupCardDots('galleryGrid');
     };
   });
 }
@@ -333,6 +425,72 @@ function initNav() {
 /* ══════════════════════════════════════════════════════
    INIT: fetch everything from Supabase, then render
 ═══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   SWIPE-PROGRESS DOTS (Skills, Experience, Certifications,
+   Ventures, Gallery, Leadership). Builds a dot per visible
+   card, tracks which one is centered while swiping via
+   IntersectionObserver, and lets tapping a dot jump there.
+   Safe to call again (e.g. after Gallery's filter changes)
+   — it rebuilds from scratch each time.
+═══════════════════════════════════════════════════════ */
+const cardDotObservers = {};
+
+function setupCardDots(gridId) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+
+  let dotsWrap = document.getElementById(gridId + 'Dots');
+  if (!dotsWrap) {
+    dotsWrap = document.createElement('div');
+    dotsWrap.id = gridId + 'Dots';
+    dotsWrap.className = 'swipe-dots';
+    grid.insertAdjacentElement('afterend', dotsWrap);
+  }
+
+  if (cardDotObservers[gridId]) {
+    cardDotObservers[gridId].disconnect();
+  }
+
+  const cards = Array.from(grid.children).filter((c) => !c.classList.contains('hidden'));
+
+  if (cards.length <= 1) {
+    dotsWrap.innerHTML = '';
+    return;
+  }
+
+  dotsWrap.innerHTML = cards.map((_, i) =>
+    `<button class="carousel-dot" data-i="${i}" aria-label="Go to card ${i + 1}"></button>`
+  ).join('');
+  const dots = Array.from(dotsWrap.children);
+  dots[0].classList.add('active');
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    });
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const idx = cards.indexOf(entry.target);
+        if (idx !== -1) {
+          dots.forEach((d) => d.classList.remove('active'));
+          dots[idx].classList.add('active');
+        }
+      }
+    });
+  }, { root: grid, threshold: 0.6 });
+
+  cards.forEach((c) => observer.observe(c));
+  cardDotObservers[gridId] = observer;
+}
+
+function setupAllCardDots() {
+  ['skillsGrid', 'experienceGrid', 'certGrid', 'venturesGrid', 'galleryGrid', 'leadershipGrid']
+    .forEach(setupCardDots);
+}
+
 async function init() {
   initNav();
 
@@ -371,6 +529,8 @@ async function init() {
 
     if (leadership.error) throw leadership.error;
     renderLeadership(leadership.data);
+
+    setupAllCardDots();
   } catch (err) {
     console.error('Failed to load content from Supabase:', err);
     document.querySelectorAll('.data-grid').forEach((g) => {

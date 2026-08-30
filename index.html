@@ -131,9 +131,23 @@
         <div class="container">
           <h2>Testimonials</h2>
           <p class="section-intro">What others say about me and my work.</p>
-          <div class="grid grid-2 data-grid" id="testimonialsGrid">
+
+          <div class="anon-notice">
+            <span class="anon-icon">ℹ</span>
+            Names are anonymised at each person's request, but every endorsement below is real.
+          </div>
+
+          <div id="testimonialFeatured" class="testimonial-featured data-grid">
             <p>Loading…</p>
           </div>
+
+          <div class="carousel-controls">
+            <button id="testiPrev" class="carousel-arrow" aria-label="Previous testimonial">←</button>
+            <div id="testiDots" class="carousel-dots"></div>
+            <button id="testiNext" class="carousel-arrow" aria-label="Next testimonial">→</button>
+          </div>
+
+          <div id="testimonialsGrid" class="grid grid-2 testimonial-mini-grid"></div>
         </div>
       </section>
 
@@ -172,9 +186,60 @@
     </main>
   </div>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2026 All-of-Tendy - Portfolio.</p>
+  <footer class="site-footer-new" id="siteFooter">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-top">
+          <svg class="footer-shield" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2L4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M9.5 12l1.8 1.8L15 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="footer-name">Tendani</span>
+        </div>
+        <p class="footer-tagline">South African Cybersecurity Analyst specialising in Application Security. IBM-certified. Founder. Speaker. Not a quitter.</p>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/in/tendy2027" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 10v6.5M7.5 7.2v.1M11.5 16.5V13c0-1.4.9-2.3 2.1-2.3 1.2 0 1.9.9 1.9 2.3v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </a>
+          <a href="https://github.com/Tendy2027" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.15-1.11-1.46-1.11-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.83-2.34 4.68-4.57 4.92.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" fill="currentColor"/></svg>
+          </a>
+          <a href="mailto:tendyagreement@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 6l8.5 7 8.5-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-nav">
+        <h4>Navigate</h4>
+        <div class="footer-nav-links">
+          <a href="#home">About</a>
+          <a href="#ventures">Ventures</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Experience</a>
+          <a href="#certifications">Certifications</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#leadership">Leadership</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer-status">
+        <h4>Status</h4>
+        <ul class="status-list">
+          <li><span class="status-dot dot-green pulsing"></span> Open to opportunities</li>
+          <li><span class="status-dot dot-red"></span> AppSec Junior Roles</li>
+          <li><span class="status-dot dot-blue"></span> Learnerships &amp; Internships</li>
+          <li><span class="status-dot dot-purple"></span> Collaborations</li>
+          <li><span class="status-dot dot-green"></span> South Africa · Remote</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom container">
+      <p>Built with ❤️ and secure code — Tendani © 2026</p>
+      <a href="#top" class="back-to-top">↑ Back to top</a>
     </div>
   </footer>
 
