@@ -419,6 +419,49 @@ label {
 }
 
 /* ═══════════════════════════════
+   SWIPEABLE CARD CAROUSEL (phone)
+   Every .grid-2 (skills, experience,
+   certifications, ventures, gallery,
+   testimonials, leadership) becomes a
+   horizontal swipe-to-scroll row instead
+   of a long vertical stack.
+═══════════════════════════════ */
+@media (max-width: 768px) {
+  .grid-2 {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.9rem;
+    padding: 0.25rem 1.25rem 1rem;
+    margin: 0 -1.25rem;
+    scrollbar-width: none;
+  }
+  .grid-2::-webkit-scrollbar {
+    display: none;
+  }
+  .grid-2 > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+  /* Gallery filter row also scrolls horizontally instead of wrapping */
+  .filter-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    flex: 0 0 auto;
+  }
+}
+
+/* ═══════════════════════════════
    CLICKABLE CARDS WITH IMAGES
 ═══════════════════════════════ */
 .project-card,
