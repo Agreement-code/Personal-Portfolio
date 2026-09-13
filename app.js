@@ -491,6 +491,74 @@ function setupAllCardDots() {
     .forEach(setupCardDots);
 }
 
+/* ══════════════════════════════════════════════════════
+   RENDER: HOBBIES (featured card + smaller cards)
+═══════════════════════════════════════════════════════ */
+function renderHobbies(rows) {
+  const grid = document.getElementById('hobbiesGrid');
+  if (!rows || !rows.length) { grid.innerHTML = '<p>No hobbies added yet.</p>'; return; }
+
+  grid.innerHTML = rows.map((h, i) => {
+    if (h.type === 'featured') {
+      const safeImage = isSafeUrl(h.image) ? h.image : '';
+      const bgStyle = safeImage ? ` style="background-image:url('${escapeHtml(safeImage)}')"` : '';
+      const tags = Array.isArray(h.tags) ? h.tags : [];
+      return `
+        <article class="hobby-featured">
+          <div class="hobby-featured-bg"${bgStyle}></div>
+          <div class="hobby-featured-overlay"></div>
+          <div class="hobby-featured-content">
+            <div class="hobby-badge-row">
+              ${h.badge_label ? `<span class="hobby-featured-badge">${escapeHtml(h.badge_label)}</span>` : ''}
+              ${h.category_label ? `<span class="hobby-sport-label">${escapeHtml(h.category_label)}</span>` : ''}
+            </div>
+            <h3 class="hobby-featured-title">${escapeHtml(h.icon)} ${escapeHtml(h.title)}</h3>
+            <p class="hobby-featured-desc">${escapeHtml(h.description)}</p>
+            <div class="trait-tags">
+              ${tags.map((t) => `<span class="trait-tag">${escapeHtml(t)}</span>`).join('')}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+    return `
+      <article class="hobby-card" style="--i:${i}">
+        <div class="hobby-icon-badge">${escapeHtml(h.icon)}</div>
+        <h4>${escapeHtml(h.title)}</h4>
+        <p>${escapeHtml(h.description)}</p>
+      </article>
+    `;
+  }).join('');
+
+  initHobbiesAnimation();
+}
+
+/* ══════════════════════════════════════════════════════
+   HOBBIES SECTION — scroll-in animations
+   Called after renderHobbies() builds the cards, since they
+   no longer exist in the DOM until the Supabase fetch resolves.
+═══════════════════════════════════════════════════════ */
+function initHobbiesAnimation() {
+  const targets = document.querySelectorAll('.hobby-featured, .hobby-card');
+  if (!targets.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach((el) => el.classList.add('in-view'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  targets.forEach((el) => observer.observe(el));
+}
+
 async function init() {
   initNav();
 
@@ -499,7 +567,7 @@ async function init() {
   });
 
   try {
-    const [skills, experience, certifications, ventures, projects, testimonials, leadership] = await Promise.all([
+    const [skills, experience, certifications, ventures, projects, testimonials, leadership, hobbies] = await Promise.all([
       supabaseClient.from('skills').select('*').order('sort_order'),
       supabaseClient.from('experience').select('*').order('sort_order'),
       supabaseClient.from('certifications').select('*').order('sort_order'),
@@ -507,6 +575,7 @@ async function init() {
       supabaseClient.from('projects').select('*').order('sort_order'),
       supabaseClient.from('testimonials').select('*').order('sort_order'),
       supabaseClient.from('leadership').select('*').order('sort_order'),
+      supabaseClient.from('hobbies').select('*').order('sort_order'),
     ]);
 
     if (skills.error) throw skills.error;
@@ -529,6 +598,9 @@ async function init() {
 
     if (leadership.error) throw leadership.error;
     renderLeadership(leadership.data);
+
+    if (hobbies.error) throw hobbies.error;
+    renderHobbies(hobbies.data);
 
     setupAllCardDots();
   } catch (err) {
