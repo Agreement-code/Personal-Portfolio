@@ -4,6 +4,8 @@
   --text-muted: #adb5c0;
   --primary: #64d9ff;
   --primary-2: #3f8cff;
+  --pink: #ff5ec4;
+  --pink-2: #ff8fdc;
   --card: #121f32;
   --accent: #ffb400;
   --border: #22314a;
@@ -193,7 +195,7 @@ body {
 
 .btn {
   display: inline-block;
-  background: linear-gradient(120deg, var(--primary), var(--primary-2));
+  background: linear-gradient(120deg, var(--pink), var(--primary));
   color: #08111f;
   border: none;
   padding: 0.75rem 1.2rem;
@@ -344,8 +346,8 @@ label {
 }
 .filter-btn.active {
   color: #08111f;
-  background: var(--primary);
-  border-color: var(--primary);
+  background: linear-gradient(120deg, var(--pink), var(--primary));
+  border-color: transparent;
 }
 .project-card.hidden {
   display: none;
@@ -594,9 +596,9 @@ label {
 .stack-pill {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--primary);
-  background: rgba(100, 217, 255, 0.08);
-  border: 1px solid rgba(100, 217, 255, 0.25);
+  color: var(--pink-2);
+  background: rgba(255, 94, 196, 0.08);
+  border: 1px solid rgba(255, 94, 196, 0.25);
   border-radius: 20px;
   padding: 0.25rem 0.7rem;
 }
@@ -775,7 +777,7 @@ label {
 .carousel-dot.active {
   width: 22px;
   border-radius: 5px;
-  background: var(--primary);
+  background: linear-gradient(120deg, var(--pink), var(--primary));
 }
 
 /* Generic swipe-progress dots under other card carousels
@@ -1006,5 +1008,164 @@ label {
   }
   .testimonial-featured {
     padding: 1.75rem 1.25rem;
+  }
+}
+
+/* ═══════════════════════════════
+   HOBBIES, INTERESTS & TALENTS
+═══════════════════════════════ */
+.hobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+}
+
+/* Featured basketball card — spans 2 of 3 columns */
+.hobby-featured {
+  grid-column: span 2;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  min-height: 340px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.75rem;
+  background: linear-gradient(135deg, #1a1440, var(--card));
+  border: 1px solid var(--border);
+  box-shadow: 0 0 0 1px rgba(255, 94, 196, 0.15), 0 16px 40px rgba(255, 94, 196, 0.12);
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.hobby-featured.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hobby-featured-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  transition: transform 0.5s ease;
+}
+.hobby-featured:hover .hobby-featured-bg {
+  transform: scale(1.07);
+}
+
+.hobby-featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(11, 14, 32, 0.96) 15%, rgba(11, 14, 32, 0.55) 100%);
+}
+
+.hobby-featured-content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+}
+
+.hobby-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+.hobby-featured-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #08111f;
+  background: linear-gradient(120deg, var(--pink), var(--pink-2));
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+}
+.hobby-sport-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hobby-featured-title {
+  font-size: 1.6rem;
+  color: var(--text);
+  margin: 0 0 0.6rem;
+}
+
+.hobby-featured-desc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 1.1rem;
+}
+
+.trait-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.trait-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--pink-2);
+  background: rgba(255, 94, 196, 0.1);
+  border: 1px solid rgba(255, 94, 196, 0.3);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+}
+
+/* Four smaller interest cards */
+.hobby-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease;
+  transition-delay: calc(var(--i, 0) * 0.1s);
+}
+.hobby-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hobby-card:hover {
+  border-color: rgba(255, 94, 196, 0.4);
+  transform: translateY(-3px);
+}
+
+.hobby-icon-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 94, 196, 0.1);
+  display: grid;
+  place-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.hobby-card h4 {
+  color: var(--text);
+  font-size: 0.98rem;
+  margin: 0 0 0.35rem;
+}
+.hobby-card p {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .hobbies-grid {
+    grid-template-columns: 1fr;
+  }
+  .hobby-featured {
+    grid-column: span 1;
+    min-height: 300px;
   }
 }
