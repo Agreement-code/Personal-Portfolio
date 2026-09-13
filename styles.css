@@ -961,7 +961,9 @@ label {
   flex: 0 0 auto;
 }
 .dot-green { background: #2ee672; }
-.dot-red { background: #ff5c5c; }
+/* dot-red kept its class name (still referenced in index.html) but now
+   renders blue — red clashed with the pink+blue theme */
+.dot-red { background: var(--primary); }
 .dot-blue { background: var(--primary-2); }
 .dot-purple { background: #b07cff; }
 .dot-green.pulsing {
@@ -1168,4 +1170,12 @@ label {
     grid-column: span 1;
     min-height: 300px;
   }
+}
+
+/* Pink → blue gradient text utility, used on the hero name */
+.text-gradient {
+  background: linear-gradient(120deg, var(--pink), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
